@@ -1,0 +1,55 @@
+header {
+  background: #111;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+/* ==========================================
+   NAVIGATION STYLES
+   ========================================== */
+nav {
+  background-color: #fff;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav p {
+  margin: 0 0 10px 0;
+  color: white;
+  font-size: 16px;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  background-color: #111;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+nav ul li a:hover {
+  background-color: #f39c12;
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

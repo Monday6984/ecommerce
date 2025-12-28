@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Management System</title>
+    <link rel="stylesheet" href="navStyles.css" />
+    <style>
+      .product {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+      }
+      .cart {
+        background: #f9f9f9;
+        padding: 15px;
+        margin-top: 20px;
+      }
+      button {
+        margin: 5px;
+        padding: 5px 10px;
+      }
+
+      /* .product {
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 6px;
+        display: flex;
+      } */
+      .product img {
+        margin-bottom: 8px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>🛒 My Ecommerce Store</h1>
+      <!-- Navigation Menu -->
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop2.html">Shop 2</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div id="app">
+      <h1>Product Store 2</h1>
+      <div id="productList">
+        <!-- Products will be rendered here -->
+      </div>
+      <div id="cart" class="cart">
+        <h2>Shopping Cart</h2>
+        <div id="cartItems">
+          <!-- Cart items will be rendered here -->
+        </div>
+        <p>Total: <span id="cartTotal">0.00</span></p>
+      </div>
+    </div>
+
+    <script type="module">
+      // Import Modules
+      import { Product, ProductList } from "./product/index.js";
+      import { Cart } from "./cart/index.js";
+      import { formatCurrency } from "./utils/index.js";
+
+      // Initialize Product List and Cart
+      class ProductManager {
+        constructor() {
+          this.productList = new ProductList();
+          this.cart = new Cart();
+          this.initializeProducts();
+          this.renderProducts();
+          this.setupEventListeners();
+        }
+
+        initializeProducts() {
+          const products = [
+            new Product(
+              1,
+              "JavaScript Book",
+              29.99,
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmb0M3u3VkoWNhjHM1tsx1QDhdCfYasKdpRA&s"
+            ),
+            new Product(
+              2,
+              "Laptop",
+              999.999,
+              "https://www.dict.com.na/wp-content/uploads/2024/02/DICT-Apple-MacBook-Air-15-Laptop-01.jpg"
+            ),
+            new Product(
+              3,
+              "Coffee Mug",
+              12.5,
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh8PzRBq4VBrPaNTXy130PEGc6xb39yc2rgw&s"
+            ),
+            new Product(
+              4,
+              "Headphones",
+              89.99,
+              "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/13/6587814/1.jpg?6892"
+            ),
+          ];
+
+          products.forEach((product) => this.productList.addProduct(product));
+        }
+
+        renderProducts() {
+          const container = document.getElementById("productList");
+          container.innerHTML = "";
+
+          this.productList.getAllProducts().forEach((product) => {
+            const productDiv = document.createElement("div");
+            productDiv.className = "product";
+            productDiv.innerHTML = `
+                                <img 
+                            src="${
+                              product.image || "./assets/images/placeholder.png"
+                            }"
+                            alt="${product.name}"
+                            style="width:100%; max-width:200px; object-fit:cover;"
+                        />
+                        <h3>${product.name}</h3>
+                        <p>Price: ${formatCurrency(product.price)}</p>
+                        <button data-id="${
+                          product.id
+                        }" class="add-to-cart">Add to Cart</button>
+                    `;
+            container.appendChild(productDiv);
+          });
+        }
+
+        renderCart() {
+          const container = document.getElementById("cartItems");
+          const totalElement = document.getElementById("cartTotal");
+
+          container.innerHTML = "";
+          // In a real app, you'd loop through cart items
+          totalElement.textContent = formatCurrency(
+            this.cart.getTotal().toFixed(2)
+          );
+        }
+
+        setupEventListeners() {
+          document.addEventListener("click", (event) => {
+            if (event.target.classList.contains("add-to-cart")) {
+              const productId = parseInt(event.target.dataset.id);
+              const product = this.productList.getProductsById(productId);
+              if (product) {
+                this.cart.addItem(product);
+                this.renderCart();
+              }
+            }
+          });
+        }
+      }
+
+      // Initialize the Product Manager
+      new ProductManager();
+    </script>
+  </body>
+</html>
